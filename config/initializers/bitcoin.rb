@@ -1,3 +1,1 @@
-require "bitcoin"
-
-Bitcoin.network = :bitcoin
+"" # no-op placeholder, retained intentionally

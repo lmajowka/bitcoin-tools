@@ -23,67 +23,52 @@ class BitcoinCalculator
     private
 
     def detect_private_key(input)
-      return unless input.match?(/\A[0-9a-fA-F]{64}\z/)
+      return unless BitcoinUtils.valid_private_key_hex?(input)
 
-      priv_hex = input.downcase
-      compressed_key = Bitcoin::Key.new(priv_hex, nil, compressed: true)
-      uncompressed_key = Bitcoin::Key.new(priv_hex, nil, compressed: false)
+      data = BitcoinUtils.derive_from_private(input)
 
       Result.new(
-        input: priv_hex,
+        input: data[:private_key_hex],
         input_type: :private_key_hex,
         errors: [],
-        data: build_key_data(compressed_key, uncompressed_key)
+        data: data
       )
+    rescue ArgumentError
+      nil
     end
 
     def detect_wif(input)
-      key = Bitcoin::Key.from_base58(input)
-
-      priv_hex = key.priv
-      compressed_key = Bitcoin::Key.new(priv_hex, nil, compressed: true)
-      uncompressed_key = Bitcoin::Key.new(priv_hex, nil, compressed: false)
+      priv_hex, _compressed = BitcoinUtils.decode_wif(input)
+      data = BitcoinUtils.derive_from_private(priv_hex)
 
       Result.new(
         input: input,
         input_type: :wif,
         errors: [],
-        data: build_key_data(compressed_key, uncompressed_key)
+        data: data
       )
     rescue ArgumentError
       nil
     end
 
     def detect_public_key(input)
-      return unless input.match?(/\A[0-9a-fA-F]{66}\z/) || input.match?(/\A[0-9a-fA-F]{130}\z/)
+      return unless BitcoinUtils.valid_public_key_hex?(input)
 
-      key_hex = input.downcase
-      compressed = key_hex.length == 66
+      details = BitcoinUtils.public_key_details(input)
+      compressed = input.length == 66
 
       Result.new(
-        input: key_hex,
+        input: details[:public_key],
         input_type: compressed ? :compressed_public_key : :uncompressed_public_key,
         errors: [],
         data: {
-          public_key: key_hex,
-          address_p2pkh: Bitcoin.pubkey_to_address(key_hex)
+          public_key: details[:public_key],
+          hash160: details[:hash160],
+          address_p2pkh: details[:address_p2pkh]
         }
       )
-    end
-
-    def build_key_data(compressed_key, uncompressed_key)
-      compressed_pub = compressed_key.pub_compressed
-      uncompressed_pub = uncompressed_key.pub_uncompressed
-
-      {
-        private_key_hex: compressed_key.priv,
-        wif_compressed: compressed_key.to_base58,
-        wif_uncompressed: uncompressed_key.to_base58,
-        public_key_compressed: compressed_pub,
-        public_key_uncompressed: uncompressed_pub,
-        address_p2pkh_compressed: Bitcoin.pubkey_to_address(compressed_pub),
-        address_p2pkh_uncompressed: Bitcoin.pubkey_to_address(uncompressed_pub)
-      }
+    rescue ArgumentError
+      nil
     end
 
     def build_error(input, message)
