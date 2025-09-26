@@ -150,7 +150,7 @@ module BitcoinUtils
 
   def encode_base58(data)
     int = data.bytes.reduce(0) { |total, byte| (total << 8) + byte }
-    result = ""
+    result = String.new
 
     while int.positive?
       int, remainder = int.divmod(58)
