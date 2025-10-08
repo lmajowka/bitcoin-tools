@@ -39,6 +39,130 @@ body {
   color: var(--text-primary);
 }
 
+.global-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px);
+  background: rgba(13, 17, 23, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.global-nav__inner {
+  margin: 0 auto;
+  width: min(1040px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+  gap: 1rem;
+}
+
+.global-nav__brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.global-nav__links {
+  display: flex;
+  gap: clamp(0.75rem, 3vw, 1.75rem);
+}
+
+.global-nav__link {
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.global-nav__link:hover,
+.global-nav__link:focus {
+  color: var(--text-primary);
+}
+
+.notice {
+  margin: 1.5rem auto;
+  width: min(960px, 100%);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.notice--alert {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: rgba(255, 107, 107, 0.35);
+  color: var(--danger);
+}
+
+.page-intro {
+  margin: clamp(2rem, 6vw, 4rem) auto clamp(1rem, 4vw, 2rem);
+  width: min(1040px, 100%);
+}
+
+.page-intro h1 {
+  margin-bottom: 0.5rem;
+}
+
+.page-intro p {
+  margin: 0;
+  color: var(--text-secondary);
+  max-width: 60ch;
+  line-height: 1.6;
+}
+
+.puzzle-list {
+  margin: 0 auto clamp(2rem, 6vw, 4rem);
+  width: min(1040px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.puzzle-list__header p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.puzzle-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(13, 17, 23, 0.7);
+  box-shadow: var(--shadow);
+}
+
+.puzzle-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.puzzle-table th,
+.puzzle-table td {
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.puzzle-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.puzzle-table th {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
 code {
   font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }

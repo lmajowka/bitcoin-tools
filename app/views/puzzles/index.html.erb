@@ -1,0 +1,56 @@
+<section class="page-intro">
+  <h1>Bitcoin Puzzle Collection</h1>
+  <p>Curated list of Bitcoin brainteasers and cryptographic challenges.</p>
+</section>
+
+<% if flash[:alert] %>
+  <div class="notice notice--alert"><%= flash[:alert] %></div>
+<% end %>
+
+<% if @puzzles.present? %>
+  <section class="puzzle-list">
+    <header class="puzzle-list__header">
+      <h2>Unsolved Transactions</h2>
+      <p>Data sourced from <a href="https://privatekeys.pw/puzzles/bitcoin-puzzle-tx" target="_blank" rel="noopener">PrivateKeys Bitcoin Puzzle TX</a>.</p>
+    </header>
+
+    <div class="puzzle-table-wrapper">
+      <table class="puzzle-table">
+        <thead>
+          <tr>
+            <th scope="col">Puzzle</th>
+            <th scope="col">Key Range (Hex)</th>
+            <th scope="col">Reward (BTC)</th>
+            <th scope="col">Address</th>
+            <th scope="col">Hash160</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @puzzles.each do |puzzle| %>
+            <tr>
+              <th scope="row">#<%= puzzle[:bits] %></th>
+              <td><code><%= puzzle[:range].first %></code> – <code><%= puzzle[:range].last %></code></td>
+              <td><%= puzzle[:btc_value] %></td>
+              <td>
+                <% if puzzle[:address].present? %>
+                  <%= link_to puzzle[:address], "https://mempool.space/address/#{puzzle[:address]}", target: "_blank", rel: "noopener" %>
+                <% else %>
+                  <span class="muted">n/a</span>
+                <% end %>
+              </td>
+              <td>
+                <% if puzzle[:hash160].present? %>
+                  <code><%= puzzle[:hash160] %></code>
+                <% else %>
+                  <span class="muted">n/a</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+<% else %>
+  <p class="muted">No puzzles available at the moment.</p>
+<% end %>

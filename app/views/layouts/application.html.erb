@@ -24,6 +24,20 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header class="global-nav">
+      <div class="global-nav__inner">
+        <%= link_to "Bitcoin Tools", root_path, class: "global-nav__brand" %>
+
+        <nav class="global-nav__links" aria-label="Primary navigation">
+          <%= link_to "List of puzzles", puzzles_path, class: "global-nav__link" %>
+          <%= link_to "Crypto Calculator", calculators_path, class: "global-nav__link" %>
+          <%= link_to "Range Generator", range_generators_path, class: "global-nav__link" %>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>
