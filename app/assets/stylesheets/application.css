@@ -130,37 +130,56 @@ body {
 .puzzle-table-wrapper {
   overflow-x: auto;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(13, 17, 23, 0.7);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(145deg, rgba(24, 32, 45, 0.95), rgba(20, 26, 36, 0.92));
+  box-shadow: 0 26px 48px rgba(3, 10, 24, 0.45);
 }
 
 .puzzle-table {
   width: 100%;
   border-collapse: collapse;
   min-width: 720px;
+  color: var(--text-primary);
 }
 
 .puzzle-table th,
 .puzzle-table td {
-  padding: 0.9rem 1.1rem;
+  padding: 1rem 1.25rem;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
 }
 
 .puzzle-table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.puzzle-table tbody tr:nth-child(odd) td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.puzzle-table tbody tr:hover td {
+  background: rgba(247, 147, 26, 0.12);
+  border-bottom-color: rgba(247, 147, 26, 0.4);
+}
+
 .puzzle-table th {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted);
+  color: rgba(240, 246, 252, 0.75);
+  font-weight: 600;
 }
 
 .muted {
   color: var(--muted);
+}
+
+.puzzle-table code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
 }
 
 code {
