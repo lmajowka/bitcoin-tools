@@ -1,4 +1,115 @@
-<section class="page-intro" data-animate>
-  <h1>Range Generator</h1>
-  <p>🔢 Generate sequential key ranges to explore Bitcoin address spaces.</p>
+<% content_for :title, "Range Generator" %>
+
+<section class="calculator" data-controller="animations">
+  <div class="calculator__container">
+    <header class="calculator__intro" data-animate>
+      <p class="calculator__eyebrow">Tools</p>
+      <h1>Range Generator</h1>
+      <p class="calculator__description">
+        🔢 Generate sequential key ranges to explore Bitcoin address spaces. Select a puzzle wallet and choose how to generate your initial key within the range.
+      </p>
+    </header>
+
+    <div class="calculator__grid">
+      <div class="calculator__card calculator__card--input" data-animations-target="card" data-animate="delayed">
+        <h2 class="calculator__card-title">Configuration</h2>
+        <p class="calculator__card-subtitle">
+          🎯 Choose your target wallet and initial key generation method.
+        </p>
+
+        <%= form_with url: range_generators_path, scope: :range, method: :post, class: "calculator__form", data: { turbo: false } do |form| %>
+          <div class="calculator__field">
+            <%= form.label :wallet_number, "Puzzle Wallet (1-160)" %>
+            <%= form.number_field :wallet_number, 
+                value: @wallet_number || 66, 
+                min: 1, 
+                max: 160, 
+                placeholder: "e.g. 66",
+                class: "calculator__input" %>
+            <small class="calculator__hint">Each wallet represents a different bit range (e.g., wallet 66 = 2^65 to 2^66-1)</small>
+          </div>
+
+          <div class="calculator__field">
+            <%= form.label :generation_method, "Initial Key Generation Method" %>
+            <%= form.select :generation_method, 
+                [["Random - Generate random key in range", "random"], 
+                 ["Percentual - Choose position in range", "percentual"]], 
+                { selected: @generation_method || "random" },
+                class: "calculator__select",
+                onchange: "this.form.querySelector('.percentual-field').style.display = this.value === 'percentual' ? 'block' : 'none';" %>
+          </div>
+
+          <div class="calculator__field percentual-field" style="<%= @generation_method == 'percentual' ? 'display: block;' : 'display: none;' %>">
+            <%= form.label :percentage, "Position in Range (1-100%)" %>
+            <%= form.number_field :percentage, 
+                value: @percentage || 50, 
+                min: 1, 
+                max: 100, 
+                step: 0.01,
+                placeholder: "e.g. 50",
+                class: "calculator__input" %>
+            <small class="calculator__hint">1% = start of range, 50% = middle, 100% = end of range</small>
+          </div>
+
+          <div class="calculator__actions">
+            <%= form.submit "Generate Range", class: "calculator__submit", data: { action: "click->animations#ripple click->animations#submitForm" } %>
+            <small class="calculator__hint">✨ Generate your starting key and explore the range.</small>
+          </div>
+        <% end %>
+      </div>
+
+      <% if defined?(@result) && @result.present? %>
+        <div class="calculator__card calculator__card--results" data-animations-target="card" data-animate="late">
+          <div class="calculator__results-header">
+            <h2 class="calculator__card-title">Generated Range</h2>
+            <p class="calculator__badge">Wallet #<%= @result[:wallet_number] %></p>
+          </div>
+
+          <% if @result[:errors].present? %>
+            <div class="calculator__results-errors">
+              <h3>⚠️ We hit a snag</h3>
+              <ul>
+                <% @result[:errors].each do |error| %>
+                  <li><%= error %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% else %>
+            <dl class="calculator__details">
+              <div class="calculator__details-row">
+                <dt>Range Start (Hex)</dt>
+                <dd data-animations-target="copyable" data-tooltip="Click to copy"><code><%= @result[:range_start] %></code></dd>
+              </div>
+              <div class="calculator__details-row">
+                <dt>Range End (Hex)</dt>
+                <dd data-animations-target="copyable" data-tooltip="Click to copy"><code><%= @result[:range_end] %></code></dd>
+              </div>
+              <div class="calculator__details-row">
+                <dt>Initial Key (Hex)</dt>
+                <dd data-animations-target="copyable" data-tooltip="Click to copy"><code><%= @result[:initial_key] %></code></dd>
+              </div>
+              <div class="calculator__details-row">
+                <dt>Initial Key (Decimal)</dt>
+                <dd data-animations-target="copyable" data-tooltip="Click to copy"><code><%= @result[:initial_key_decimal] %></code></dd>
+              </div>
+              <div class="calculator__details-row">
+                <dt>Generation Method</dt>
+                <dd><%= @result[:generation_method].humanize %></dd>
+              </div>
+              <% if @result[:percentage].present? %>
+                <div class="calculator__details-row">
+                  <dt>Position in Range</dt>
+                  <dd><%= @result[:percentage] %>%</dd>
+                </div>
+              <% end %>
+              <div class="calculator__details-row">
+                <dt>Total Keys in Range</dt>
+                <dd><code><%= @result[:total_keys] %></code></dd>
+              </div>
+            </dl>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </section>
