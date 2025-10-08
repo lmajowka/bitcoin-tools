@@ -23,7 +23,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="scroll-effects theme">
+  <body data-controller="scroll-effects theme utilities">
     <header class="global-nav" data-scroll-effects-target="nav">
       <div class="global-nav__inner">
         <%= link_to "Bitcoin Tools", root_path, class: "global-nav__brand" %>
@@ -39,5 +39,24 @@
     <main>
       <%= yield %>
     </main>
+
+    <footer class="global-footer">
+      <div class="global-footer__inner">
+        <div class="global-footer__brand">Bitcoin Tools</div>
+        <p class="global-footer__tagline">
+          Secure, open-source cryptographic utilities for Bitcoin enthusiasts
+        </p>
+        
+        <nav class="global-footer__links" aria-label="Footer navigation">
+          <%= link_to "Puzzles", puzzles_path, class: "global-footer__link" %>
+          <%= link_to "Calculator", calculators_path, class: "global-footer__link" %>
+          <%= link_to "Range Generator", range_generators_path, class: "global-footer__link" %>
+        </nav>
+
+        <p class="global-footer__copyright">
+          Made with <span class="global-footer__heart">♥</span> for the Bitcoin community
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
