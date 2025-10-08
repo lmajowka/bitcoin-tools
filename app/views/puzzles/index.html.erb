@@ -1,19 +1,20 @@
-<section class="page-intro">
+<section class="page-intro" data-animate>
   <h1>Bitcoin Puzzle Collection</h1>
-  <p>Curated list of Bitcoin brainteasers and cryptographic challenges.</p>
+  <p> Curated list of Bitcoin brainteasers and cryptographic challenges.</p>
 </section>
 
 <% if flash[:alert] %>
-  <div class="notice notice--alert"><%= flash[:alert] %></div>
+  <div class="notice notice--alert" data-animate="delayed"><%= flash[:alert] %></div>
 <% end %>
 
 <% if @puzzles.present? %>
-  <section class="puzzle-list">
-    <header class="puzzle-list__header">
+  <section class="puzzle-list" data-controller="animations">
+    <header class="puzzle-list__header" data-animate="delayed">
       <h2>Unsolved Transactions</h2>
+      <p> Data sourced from <a href="https://privatekeys.pw/puzzles/bitcoin-puzzle-tx" target="_blank" rel="noopener">PrivateKeys Bitcoin Puzzle TX</a>.</p>
     </header>
 
-    <div class="puzzle-table-wrapper">
+    <div class="puzzle-table-wrapper" data-animate="late">
       <table class="puzzle-table">
         <thead>
           <tr>
@@ -29,17 +30,17 @@
             <tr>
               <th scope="row">#<%= puzzle[:bits] %></th>
               <td><code><%= puzzle[:range].first %></code> – <code><%= puzzle[:range].last %></code></td>
-              <td><%= puzzle[:btc_value] %></td>
+              <td>₿ <%= puzzle[:btc_value] %></td>
               <td>
                 <% if puzzle[:address].present? %>
-                  <%= link_to puzzle[:address], "https://mempool.space/address/#{puzzle[:address]}", target: "_blank", rel: "noopener" %>
+                  <%= link_to puzzle[:address], "https://mempool.space/address/#{puzzle[:address]}", target: "_blank", rel: "noopener", data: { tooltip: "View on Mempool" } %>
                 <% else %>
                   <span class="muted">n/a</span>
                 <% end %>
               </td>
               <td>
                 <% if puzzle[:hash160].present? %>
-                  <code><%= puzzle[:hash160] %></code>
+                  <code data-animations-target="copyable" data-tooltip="Click to copy"><%= puzzle[:hash160] %></code>
                 <% else %>
                   <span class="muted">n/a</span>
                 <% end %>

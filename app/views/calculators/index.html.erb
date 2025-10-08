@@ -1,8 +1,8 @@
 <% content_for :title, "Bitcoin Calculator" %>
 
-<section class="calculator">
+<section class="calculator" data-controller="animations">
   <div class="calculator__container">
-    <header class="calculator__intro">
+    <header class="calculator__intro" data-animate>
       <p class="calculator__eyebrow">Tools</p>
       <h1>Bitcoin Calculator</h1>
       <p class="calculator__description">
@@ -12,10 +12,10 @@
     </header>
 
     <div class="calculator__grid">
-      <div class="calculator__card calculator__card--input">
+      <div class="calculator__card calculator__card--input" data-animations-target="card" data-animate="delayed">
         <h2 class="calculator__card-title">Input</h2>
         <p class="calculator__card-subtitle">
-          Your data never leaves this page. All calculations occur purely in the browser.
+          🔒 Your data never leaves this page. All calculations occur purely in the browser.
         </p>
 
         <%= form_with url: calculators_path, scope: :calculator, method: :post, class: "calculator__form", local: true do |form| %>
@@ -25,14 +25,14 @@
           </div>
 
           <div class="calculator__actions">
-            <%= form.submit "Calculate", class: "calculator__submit" %>
-            <small class="calculator__hint">Supports mainnet hex, WIF, and public key formats.</small>
+            <%= form.submit "Calculate", class: "calculator__submit", data: { action: "click->animations#ripple click->animations#submitForm" } %>
+            <small class="calculator__hint">✨ Supports mainnet hex, WIF, and public key formats.</small>
           </div>
         <% end %>
       </div>
 
       <% if defined?(@result) && @result.present? %>
-        <div class="calculator__card calculator__card--results">
+        <div class="calculator__card calculator__card--results" data-animations-target="card" data-animate="late">
           <div class="calculator__results-header">
             <h2 class="calculator__card-title">Results</h2>
             <p class="calculator__badge"><%= @result.input_type.to_s.humanize %></p>
@@ -40,7 +40,7 @@
 
           <% if @result.errors.present? %>
             <div class="calculator__results-errors">
-              <h3>We hit a snag</h3>
+              <h3>⚠️ We hit a snag</h3>
               <ul>
                 <% @result.errors.each do |error| %>
                   <li><%= error %></li>
@@ -52,7 +52,7 @@
               <% @result.data.each do |label, value| %>
                 <div class="calculator__details-row">
                   <dt><%= label.to_s.humanize %></dt>
-                  <dd><code><%= value %></code></dd>
+                  <dd data-animations-target="copyable" data-tooltip="Click to copy"><code><%= value %></code></dd>
                 </div>
               <% end %>
             </dl>

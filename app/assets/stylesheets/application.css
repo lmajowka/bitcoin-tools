@@ -23,6 +23,7 @@
   --accent: #f7931a;
   --accent-hover: #ffb347;
   --accent-alt: #4cc9f0;
+  --accent-purple: #7c3aed;
   --text-primary: #f6f9ff;
   --text-secondary: rgba(244, 247, 255, 0.72);
   --muted: rgba(244, 247, 255, 0.58);
@@ -30,6 +31,7 @@
   --danger: #ff6b6b;
   --shadow-soft: 0 18px 32px rgba(6, 12, 30, 0.35);
   --shadow: 0 32px 58px rgba(4, 10, 28, 0.52);
+  --shadow-glow: 0 0 40px rgba(247, 147, 26, 0.15);
   --radius-lg: 26px;
   --radius-md: 18px;
   --radius-sm: 12px;
@@ -44,6 +46,7 @@
   --motion-duration: 220ms;
   --motion-duration-slow: 320ms;
   --motion-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 body {
@@ -55,6 +58,21 @@ body {
   line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Page load animation */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+body {
+  animation: page-fade-in 0.4s ease-out;
 }
 
 ::selection {
@@ -101,12 +119,28 @@ p {
 a {
   color: var(--accent-alt);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  position: relative;
 }
 
 a:hover,
 a:focus-visible {
   color: var(--accent);
+  text-shadow: 0 0 10px rgba(247, 147, 26, 0.3);
+}
+
+a[target="_blank"]::after {
+  content: "↗";
+  margin-left: 0.25rem;
+  font-size: 0.85em;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+a[target="_blank"]:hover::after {
+  opacity: 1;
+  transform: translate(2px, -2px);
 }
 
 a:focus-visible,
@@ -144,6 +178,25 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: var(--accent);
   text-decoration: none;
+  transition: all 0.3s var(--motion-ease);
+  position: relative;
+}
+
+.global-nav__brand::before {
+  content: "₿";
+  margin-right: 0.5rem;
+  font-size: 1.2em;
+  display: inline-block;
+  transition: transform 0.3s var(--motion-ease);
+}
+
+.global-nav__brand:hover::before {
+  transform: rotate(360deg) scale(1.1);
+}
+
+.global-nav__brand:hover {
+  color: var(--accent-hover);
+  text-shadow: 0 0 20px rgba(247, 147, 26, 0.4);
 }
 
 .global-nav__links {
@@ -260,6 +313,19 @@ textarea:focus-visible {
   letter-spacing: 0.05em;
   color: rgba(240, 246, 252, 0.75);
   font-weight: 600;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+  position: relative;
+}
+
+.puzzle-table th::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+  opacity: 0.3;
 }
 
 .muted {
@@ -409,13 +475,30 @@ code {
   color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.5;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+}
+
+.calculator__textarea:hover {
+  border-color: rgba(247, 147, 26, 0.2);
+  transform: translateY(-1px);
 }
 
 .calculator__textarea:focus {
   outline: none;
   border-color: rgba(247, 147, 26, 0.4);
-  box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.15);
+  box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.15), 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.calculator__textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.calculator__textarea:focus::placeholder {
+  opacity: 0.3;
 }
 
 .calculator__actions {
@@ -598,6 +681,385 @@ code {
   }
 }
 
+/* Animated background particles */
+@keyframes float-particle {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+    opacity: 0.4;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(247, 147, 26, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(76, 201, 240, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.02) 0%, transparent 50%);
+  animation: float-particle 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced pulse animation for interactive elements */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(247, 147, 26, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(247, 147, 26, 0.4);
+  }
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus states with animation */
+*:focus-visible {
+  animation: focus-pulse 0.6s ease-out;
+}
+
+@keyframes focus-pulse {
+  0% {
+    outline-offset: 2px;
+  }
+  50% {
+    outline-offset: 6px;
+  }
+  100% {
+    outline-offset: 4px;
+  }
+}
+
+/* Stagger animation for list items */
+.puzzle-table tbody tr {
+  animation: fade-in-up 0.4s var(--motion-ease) backwards;
+}
+
+.puzzle-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.puzzle-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.puzzle-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.puzzle-table tbody tr:nth-child(4) { animation-delay: 0.2s; }
+.puzzle-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+.puzzle-table tbody tr:nth-child(6) { animation-delay: 0.3s; }
+.puzzle-table tbody tr:nth-child(7) { animation-delay: 0.35s; }
+.puzzle-table tbody tr:nth-child(8) { animation-delay: 0.4s; }
+.puzzle-table tbody tr:nth-child(9) { animation-delay: 0.45s; }
+.puzzle-table tbody tr:nth-child(10) { animation-delay: 0.5s; }
+
+/* Enhanced button states */
+.calculator__submit {
+  position: relative;
+  overflow: hidden;
+}
+
+.calculator__submit::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.calculator__submit:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Gradient text effect for headings */
+.page-intro h1,
+.calculator__intro h1 {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-alt) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Card reveal animation */
+.calculator__card {
+  animation: card-reveal 0.6s var(--motion-ease) backwards;
+}
+
+.calculator__card:nth-child(1) { animation-delay: 0.1s; }
+.calculator__card:nth-child(2) { animation-delay: 0.2s; }
+.calculator__card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Floating label effect */
+.calculator__field {
+  position: relative;
+}
+
+.calculator__field label {
+  transition: all 0.3s var(--motion-ease);
+}
+
+.calculator__textarea:focus + label,
+.calculator__textarea:not(:placeholder-shown) + label {
+  transform: translateY(-4px);
+  color: var(--accent);
+}
+
+/* Copy-to-clipboard animation */
+@keyframes copy-success {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.calculator__details-row dd {
+  cursor: pointer;
+  transition: all 0.2s var(--motion-ease);
+  position: relative;
+}
+
+.calculator__details-row dd:hover {
+  background: rgba(247, 147, 26, 0.08);
+  transform: translateX(4px);
+}
+
+.calculator__details-row dd:active {
+  animation: copy-success 0.3s var(--motion-ease);
+}
+
+/* Badge pulse animation */
+.calculator__badge {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+/* Enhanced navigation hover effect */
+.global-nav__link {
+  position: relative;
+  overflow: hidden;
+}
+
+.global-nav__link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+  transform: translateX(-50%);
+  transition: width 0.3s var(--motion-ease);
+}
+
+.global-nav__link:hover::after {
+  width: 80%;
+}
+
+/* Tooltip styles */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 0.5rem 0.75rem;
+  background: rgba(7, 12, 26, 0.95);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--motion-ease), transform 0.2s var(--motion-ease);
+  z-index: 100;
+}
+
+[data-tooltip]:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(247, 147, 26, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Ripple effect animation */
+@keyframes ripple-effect {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Glow effect for interactive elements */
+.glow-on-hover {
+  position: relative;
+  z-index: 0;
+}
+
+.glow-on-hover::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--accent), var(--accent-alt), var(--accent-purple), var(--accent));
+  background-size: 400%;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradient-rotate 8s linear infinite;
+}
+
+.glow-on-hover:hover::before {
+  opacity: 0.3;
+  filter: blur(8px);
+}
+
+@keyframes gradient-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive enhancements */
+@media (max-width: 640px) {
+  .page-intro h1,
+  .calculator__intro h1 {
+    background-size: 150% 150%;
+  }
+  
+  body::before {
+    animation-duration: 15s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     --page-bg: #f6f8fa;
@@ -623,5 +1085,12 @@ code {
 
   .calculator__details-row dd {
     background: rgba(15, 23, 42, 0.06);
+  }
+  
+  body::before {
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(247, 147, 26, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(76, 201, 240, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
   }
 }

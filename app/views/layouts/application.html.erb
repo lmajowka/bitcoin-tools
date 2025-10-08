@@ -23,15 +23,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <header class="global-nav">
+  <body data-controller="scroll-effects theme">
+    <header class="global-nav" data-scroll-effects-target="nav">
       <div class="global-nav__inner">
         <%= link_to "Bitcoin Tools", root_path, class: "global-nav__brand" %>
 
         <nav class="global-nav__links" aria-label="Primary navigation">
-          <%= link_to "List of puzzles", puzzles_path, class: "global-nav__link" %>
-          <%= link_to "Crypto Calculator", calculators_path, class: "global-nav__link" %>
-          <%= link_to "Range Generator", range_generators_path, class: "global-nav__link" %>
+          <%= link_to "List of puzzles", puzzles_path, class: "global-nav__link", data: { tooltip: "Explore Bitcoin puzzles" } %>
+          <%= link_to "Crypto Calculator", calculators_path, class: "global-nav__link", data: { tooltip: "Calculate keys & addresses" } %>
+          <%= link_to "Range Generator", range_generators_path, class: "global-nav__link", data: { tooltip: "Generate key ranges" } %>
         </nav>
       </div>
     </header>
