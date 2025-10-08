@@ -133,16 +133,13 @@ export default class extends Controller {
     const button = event.currentTarget
     const originalText = button.textContent
     
-    button.disabled = true
-    button.innerHTML = `
-      <span class="loading-spinner"></span>
-      <span style="margin-left: 0.5rem;">Processing...</span>
-    `
-    
-    // Form will submit naturally, but we show loading state
-    setTimeout(() => {
-      button.disabled = false
-      button.textContent = originalText
-    }, 3000)
+    // Use requestAnimationFrame to allow form submission to proceed first
+    requestAnimationFrame(() => {
+      button.disabled = true
+      button.innerHTML = `
+        <span class="loading-spinner"></span>
+        <span style="margin-left: 0.5rem;">Processing...</span>
+      `
+    })
   }
 }
