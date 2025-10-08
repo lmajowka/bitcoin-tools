@@ -156,7 +156,7 @@ textarea:focus-visible {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(16px);
-  background: linear-gradient(120deg, rgba(6, 12, 28, 0.82), rgba(6, 12, 28, 0.65));
+  background: linear-gradient(120deg, rgba(30, 45, 70, 0.95), rgba(25, 40, 65, 0.92));
   border-bottom: var(--border-glass);
   box-shadow: 0 10px 25px rgba(4, 10, 28, 0.18);
   transition: background var(--motion-duration) ease, box-shadow var(--motion-duration) ease;
@@ -206,8 +206,8 @@ textarea:focus-visible {
 }
 
 .global-nav__link {
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: #ffffff;
   text-decoration: none;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
@@ -292,7 +292,7 @@ textarea:focus-visible {
   overflow-x: auto;
   border-radius: var(--radius-lg);
   border: var(--border-glass);
-  background: linear-gradient(150deg, rgba(14, 22, 35, 0.95), rgba(6, 12, 28, 0.88));
+  background: linear-gradient(150deg, rgba(45, 65, 95, 0.98), rgba(35, 55, 85, 0.95));
   box-shadow: var(--shadow);
   backdrop-filter: blur(24px);
 }
@@ -301,7 +301,7 @@ textarea:focus-visible {
   width: 100%;
   border-collapse: collapse;
   min-width: 720px;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .puzzle-table th,
@@ -318,7 +318,7 @@ textarea:focus-visible {
 }
 
 .puzzle-table tbody tr:nth-child(odd) td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .puzzle-table tbody tr:hover td {
@@ -330,9 +330,9 @@ textarea:focus-visible {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: rgba(240, 246, 252, 0.75);
-  font-weight: 600;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+  color: #ffffff;
+  font-weight: 700;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.10));
   position: relative;
 }
 
@@ -348,7 +348,7 @@ textarea:focus-visible {
 }
 
 .muted {
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 .puzzle-table code {
