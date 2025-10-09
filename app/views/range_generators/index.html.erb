@@ -20,11 +20,11 @@
         <%= form_with url: range_generators_path, scope: :range, method: :post, class: "calculator__form", data: { turbo: false } do |form| %>
           <div class="calculator__field">
             <%= form.label :wallet_number, "Puzzle Wallet (1-160)" %>
-            <%= form.number_field :wallet_number, 
-                value: @wallet_number || 66, 
+            <%= form.number_field :wallet_number,
+                value: @wallet_number || 71, 
                 min: 1, 
                 max: 160, 
-                placeholder: "e.g. 66",
+                placeholder: "e.g. 71",
                 class: "calculator__input" %>
             <small class="calculator__hint">Each wallet represents a different bit range (e.g., wallet 66 = 2^65 to 2^66-1)</small>
           </div>
@@ -45,7 +45,7 @@
                 value: @percentage || 50, 
                 min: 1, 
                 max: 100, 
-                step: 0.01,
+                step: :any,
                 placeholder: "e.g. 50",
                 class: "calculator__input" %>
             <small class="calculator__hint">1% = start of range, 50% = middle, 100% = end of range</small>
